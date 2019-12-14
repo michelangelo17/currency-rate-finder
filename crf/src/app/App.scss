@@ -1,0 +1,35 @@
+body {
+  background: darkslategrey;
+}
+
+h1 {
+  text-align: center;
+  color: lightblue;
+}
+
+h2 {
+  color: white;
+}
+
+h3 {
+  color: white;
+}
+
+.dropdowns {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 50px auto;
+  .FirstCurrencySelector {
+    min-width: 200px;
+    margin-bottom: 20px;
+  }
+  .SecondCurrencySelector {
+    min-width: 200px;
+  }
+}
+
+.result {
+  text-align: center;
+}
