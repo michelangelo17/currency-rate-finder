@@ -1,4 +1,4 @@
-import React, { useEffect }  from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import './App.scss'
 import FirstCurrency from './components/main/dropdowns/FirstCurrency'
@@ -8,9 +8,9 @@ import { getLocation } from '../redux/slices/locationSlice'
 
 const App = () => {
   const { userLocation } = useSelector(state => state.location)
+
   const dispatch = useDispatch()
-  const store = useSelector(state => state)
-  console.log(store)
+
   useEffect(() => {
     dispatch(getLocation())
   }, [dispatch, userLocation])

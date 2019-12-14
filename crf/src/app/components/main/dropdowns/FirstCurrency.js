@@ -16,10 +16,9 @@ const FirstCurrency = () => {
     .map(country => ({ value: country, label: country }))
 
   useEffect(() => {
-    baseCurrency &&
-      baseCurrency.currencyCode ?
-      dispatch(getRates(baseCurrency.currencyCode)) :
-    userLocation && dispatch(setBase(userLocation))
+    baseCurrency && baseCurrency.currencyCode
+      ? dispatch(getRates(baseCurrency.currencyCode))
+      : userLocation && dispatch(setBase(userLocation))
   }, [baseCurrency, dispatch, userLocation])
 
   const handlChange = e => {
