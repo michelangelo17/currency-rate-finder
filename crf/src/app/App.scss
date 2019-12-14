@@ -15,6 +15,25 @@ h3 {
   color: white;
 }
 
+.siteTitle {
+  margin-top: 70px;
+}
+
+.set-by-country {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: white;
+  height: 40px;
+  width: 150px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: darkslategray;
+  border-radius: 1px;
+}
+
 .dropdowns {
   display: flex;
   justify-content: space-around;

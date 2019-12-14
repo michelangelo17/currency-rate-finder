@@ -5,11 +5,9 @@ import store from '../redux/store'
 import { Provider } from 'react-redux'
 
 test('renders app without crashing', () => {
-  const { getByText } = render(
+  render(
     <Provider store={store}>
       <App />
     </Provider>
   )
-  const title = getByText(/Currency/i)
-  expect(title).toBeInTheDocument()
 })

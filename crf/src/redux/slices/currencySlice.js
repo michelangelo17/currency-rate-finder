@@ -287,22 +287,31 @@ const currencySlice = createSlice({
       },
     ],
     firstCountryName: '',
-    baseCurrency: {},
-    allRates: {},
+    baseCurrency: null,
+    allRates: null,
     isLoading: false,
     error: null,
     secondCountryName: null,
-    comparisonCurrency: {},
+    comparisonCurrency: null,
     selectedExchangeRate: null,
+    byCountry: false,
   },
   reducers: {
-    setBase(state, action) {
+    setBaseCountry(state, action) {
       state.firstCountryName = action.payload
-      state.baseCurrency = state.currencyOptions.filter(currency =>
+      state.baseCurrency = state.currencyOptions.find(currency =>
         currency.countries.find(country => country === action.payload)
-      )[0]
+      )
       state.secondCountryName = null
-      state.comparisonCurrency = {}
+      state.comparisonCurrency = null
+      state.selectedExchangeRate = null
+    },
+    setBaseCurrency(state, action) {
+      state.baseCurrency = state.currencyOptions.find(
+        currency => currency.currencyCode === action.payload
+      )
+      state.secondCountryName = null
+      state.comparisonCurrency = null
       state.selectedExchangeRate = null
     },
     setCurrencyLoadingToTrue(state) {
@@ -316,23 +325,37 @@ const currencySlice = createSlice({
     setCurrencyError(state, action) {
       state.error = action.payload
     },
-    setComparison(state, action) {
+    setComparisonCountry(state, action) {
       state.secondCountryName = action.payload
-      state.comparisonCurrency = state.currencyOptions.filter(currency =>
+      state.comparisonCurrency = state.currencyOptions.find(currency =>
         currency.countries.find(country => country === action.payload)
-      )[0]
+      )
       state.selectedExchangeRate =
         state.allRates[state.comparisonCurrency.currencyCode]
+    },
+    setComparisonCurrency(state, action) {
+      state.comparisonCurrency = state.currencyOptions.find(
+        currency => currency.currencyCode === action.payload
+      )
+      state.selectedExchangeRate =
+        state.allRates[state.comparisonCurrency.currencyCode]
+    },
+    setByCountry(state) {
+      state.byCountry = !state.byCountry
     },
   },
 })
 
 export const {
-  setBase,
+  setBaseCountry,
+  setBaseCurrency,
   setCurrencyLoadingToTrue,
   setCurrencyError,
   setRates,
   setComparison,
+  setComparisonCountry,
+  setComparisonCurrency,
+  setByCountry,
 } = currencySlice.actions
 
 export default currencySlice.reducer

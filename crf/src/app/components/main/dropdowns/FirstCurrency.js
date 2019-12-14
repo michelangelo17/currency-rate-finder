@@ -1,12 +1,19 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Select from 'react-select'
-import { setBase, getRates } from '../../../../redux/slices/currencySlice'
+import {
+  setBaseCountry,
+  setBaseCurrency,
+  getRates,
+} from '../../../../redux/slices/currencySlice'
 
 const FirstCurrency = () => {
-  const { currencyOptions, baseCurrency, firstCountryName } = useSelector(
-    state => state.currency
-  )
+  const {
+    currencyOptions,
+    baseCurrency,
+    firstCountryName,
+    byCountry,
+  } = useSelector(state => state.currency)
   const { userLocation } = useSelector(state => state.location)
 
   const dispatch = useDispatch()
@@ -15,34 +22,51 @@ const FirstCurrency = () => {
     .sort()
     .map(country => ({ value: country, label: country }))
 
+  const currencyList = currencyOptions.map(currency => ({
+    value: currency.currencyCode,
+    label: currency.currencyName,
+  }))
+
   useEffect(() => {
     baseCurrency && baseCurrency.currencyCode
       ? dispatch(getRates(baseCurrency.currencyCode))
-      : userLocation && dispatch(setBase(userLocation))
+      : userLocation && dispatch(setBaseCountry(userLocation))
   }, [baseCurrency, dispatch, userLocation])
 
   const handlChange = e => {
-    dispatch(setBase(e.value))
+    byCountry
+      ? dispatch(setBaseCountry(e.value))
+      : dispatch(setBaseCurrency(e.value))
   }
 
   return (
     <div>
       <Select
-        placeholder='Select country'
+        placeholder={byCountry ? 'Select country' : 'Select currency'}
         onChange={handlChange}
         className='FirstCurrencySelector'
-        options={countryList}
-        value={countryList.filter(
-          country => country.value === firstCountryName
-        )}
+        options={byCountry ? countryList : currencyList}
+        value={
+          byCountry
+            ? countryList.find(country => country.value === firstCountryName)
+            : baseCurrency &&
+              currencyList.find(
+                currency => currency.value === baseCurrency.currencyCode
+              )
+        }
       />
-      {baseCurrency && baseCurrency.currencyName && (
+      {byCountry ? baseCurrency && (
         <>
           <h2>{firstCountryName}</h2>
           <h3>Currency: {baseCurrency.currencyName}</h3>
           <h3>Currency Code: {baseCurrency.currencyCode}</h3>
         </>
-      )}
+      ) : baseCurrency &&
+      <>
+        <h2>{baseCurrency.currencyName}</h2>
+        <h3>Currency Code: {baseCurrency.currencyCode}</h3>
+      </>
+      }
     </div>
   )
 }

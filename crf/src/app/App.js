@@ -5,9 +5,11 @@ import FirstCurrency from './components/main/dropdowns/FirstCurrency'
 import SecondCurrency from './components/main/dropdowns/SecondCurrency'
 import ExchangeInfo from './components/main/ExchangeInfo'
 import { getLocation } from '../redux/slices/locationSlice'
+import { setByCountry } from '../redux/slices/currencySlice'
 
 const App = () => {
   const { userLocation } = useSelector(state => state.location)
+  const { byCountry } = useSelector(state => state.currency)
 
   const dispatch = useDispatch()
 
@@ -17,7 +19,10 @@ const App = () => {
 
   return (
     <>
-      <h1>Simple Currency Exchanger</h1>
+      <div className='set-by-country' onClick={() => dispatch(setByCountry())}>
+        <p>{byCountry ? 'Find by Currency' : 'Find by Country'}</p>
+      </div>
+      <h1 className='siteTitle'>Simple Currency Exchanger</h1>
       <main>
         <section className='dropdowns'>
           <FirstCurrency />
