@@ -50,7 +50,8 @@ const SecondCurrency = () => {
         options={byCountry ? countryList : currencyList}
         value={
           byCountry
-            ? countryList.find(country => country.value === secondCountryName)
+            ? secondCountryName &&
+              countryList.find(country => country.value === secondCountryName)
             : comparisonCurrency &&
               currencyList.find(
                 currency => currency.value === comparisonCurrency.currencyCode

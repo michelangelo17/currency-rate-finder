@@ -38,5 +38,5 @@ export const getLocation = () => dispatch => {
   dispatch(setLocationLoadingToTrue())
   Axios.get(`https://ipapi.co/country_name/`)
     .then(res => dispatch(setLocation(res.data)))
-    .catch(err => dispatch(setLocationError(err)))
+    .catch(err => dispatch(setLocationError(`${err}`)))
 }

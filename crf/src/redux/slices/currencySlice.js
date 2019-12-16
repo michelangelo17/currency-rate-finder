@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import Axios from 'axios'
+import Timeout from 'await-timeout'
+import moment from 'moment'
 
 const currencySlice = createSlice({
   name: 'currency',
@@ -288,13 +290,16 @@ const currencySlice = createSlice({
     ],
     firstCountryName: '',
     baseCurrency: null,
+    rates: null,
     allRates: null,
-    isLoading: false,
-    error: null,
+    ratesError: null,
+    allRatesError: null,
     secondCountryName: null,
     comparisonCurrency: null,
     selectedExchangeRate: null,
     byCountry: false,
+    timeStamp: null,
+    useOffline: false,
   },
   reducers: {
     setBaseCountry(state, action) {
@@ -314,16 +319,14 @@ const currencySlice = createSlice({
       state.comparisonCurrency = null
       state.selectedExchangeRate = null
     },
-    setCurrencyLoadingToTrue(state) {
-      state.isLoading = true
-    },
     setRates(state, action) {
-      state.allRates = action.payload
-      state.isLoading = false
-      state.error = null
+      state.rates = action.payload
+      state.ratesLoading = false
+      state.ratesError = null
+      state.useOffline = false
     },
-    setCurrencyError(state, action) {
-      state.error = action.payload
+    setRatesError(state, action) {
+      state.ratesError = action.payload
     },
     setComparisonCountry(state, action) {
       state.secondCountryName = action.payload
@@ -331,17 +334,34 @@ const currencySlice = createSlice({
         currency.countries.find(country => country === action.payload)
       )
       state.selectedExchangeRate =
-        state.allRates[state.comparisonCurrency.currencyCode]
+        state.rates[state.comparisonCurrency.currencyCode]
     },
     setComparisonCurrency(state, action) {
       state.comparisonCurrency = state.currencyOptions.find(
         currency => currency.currencyCode === action.payload
       )
       state.selectedExchangeRate =
-        state.allRates[state.comparisonCurrency.currencyCode]
+        state.rates[state.comparisonCurrency.currencyCode]
     },
     setByCountry(state) {
       state.byCountry = !state.byCountry
+    },
+    setAllRates(state, action) {
+      state.allRates = action.payload
+      state.allRatesError = null
+    },
+    setAllRatesError(state, action) {
+      state.allRatesError = action.payload
+    },
+    setRatesOffline(state, action) {
+      state.rates = state.allRates.find(rates => rates[action.payload])[
+        action.payload
+      ]
+      state.ratesLoading = false
+      state.useOffline = true
+    },
+    setTimeStamp(state, action) {
+      state.timeStamp = action.payload
     },
   },
 })
@@ -349,22 +369,57 @@ const currencySlice = createSlice({
 export const {
   setBaseCountry,
   setBaseCurrency,
-  setCurrencyLoadingToTrue,
-  setCurrencyError,
+  setRatesError,
   setRates,
   setComparison,
   setComparisonCountry,
   setComparisonCurrency,
   setByCountry,
+  setAllRatesError,
+  setAllRates,
+  setRatesOffline,
+  setTimeStamp,
+  setExchangeRate
 } = currencySlice.actions
 
 export default currencySlice.reducer
 
-// API Thunks must be defined outside the slice object
+// Thunks must be defined outside the slice object
 
-export const getRates = code => dispatch => {
-  dispatch(setCurrencyLoadingToTrue())
-  Axios.get(`https://api.exchangerate-api.com/v4/latest/${code}`)
-    .then(res => dispatch(setRates(res.data.rates)))
-    .catch(err => dispatch(setCurrencyError(err)))
+export const getAllRates = currencyOptions => async dispatch => {
+  const allCurrencies = currencyOptions.map(currency =>
+    Axios.get(
+      `https://api.exchangerate-api.com/v4/latest/${currency.currencyCode}`
+    ).then(res => {
+      return {
+        [currency.currencyCode]: res.data.rates,
+      }
+    })
+  )
+  dispatch(setAllRates(await Promise.all(allCurrencies)))
+}
+
+export const getRates = currencyCode => async dispatch => {
+  const timer = new Timeout()
+  try {
+    await Promise.race([
+      Axios.get(`https://api.exchangerate-api.com/v4/latest/${currencyCode}`)
+        .then(res => {
+          localStorage.setItem(
+            'timeStamp',
+            JSON.stringify(moment().format('MMMM Do YYYY, h:mm a'))
+          )
+          dispatch(setRates(res.data.rates))
+        })
+        .catch(err => {
+          dispatch(setRatesOffline(currencyCode))
+          dispatch(setRatesError(`${err}`))
+        }),
+      timer.set(500, 'Timeout!'),
+    ])
+  } catch (err) {
+    dispatch(setRatesOffline(currencyCode))
+  } finally {
+    timer.clear()
+  }
 }

@@ -9,6 +9,7 @@ const store = configureStore({
     location: locationReducer,
   },
   middleware: [...getDefaultMiddleware(), logger],
+  
 })
 
 export default store

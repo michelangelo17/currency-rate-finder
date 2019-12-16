@@ -5,6 +5,7 @@ import {
   setBaseCountry,
   setBaseCurrency,
   getRates,
+  getAllRates,
 } from '../../../../redux/slices/currencySlice'
 
 const FirstCurrency = () => {
@@ -31,7 +32,8 @@ const FirstCurrency = () => {
     baseCurrency && baseCurrency.currencyCode
       ? dispatch(getRates(baseCurrency.currencyCode))
       : userLocation && dispatch(setBaseCountry(userLocation))
-  }, [baseCurrency, dispatch, userLocation])
+    dispatch(getAllRates(currencyOptions))
+  }, [baseCurrency, dispatch, userLocation, currencyOptions])
 
   const handlChange = e => {
     byCountry

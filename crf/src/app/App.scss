@@ -1,5 +1,6 @@
 body {
   background: darkslategrey;
+  font-family: sans-serif;
 }
 
 h1 {
@@ -19,6 +20,10 @@ h3 {
   margin-top: 70px;
 }
 
+.offlineMessage {
+  text-align: center;
+}
+
 .set-by-country {
   position: absolute;
   top: 0;
@@ -32,6 +37,7 @@ h3 {
   align-items: center;
   color: darkslategray;
   border-radius: 1px;
+  font-weight: bold;
 }
 
 .dropdowns {
