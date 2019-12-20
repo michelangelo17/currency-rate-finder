@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 const ExchangeInfo = () => {
@@ -8,6 +8,9 @@ const ExchangeInfo = () => {
     comparisonCurrency,
   } = useSelector(state => state.currency)
   const [amount, setAmount] = useState(1)
+  useEffect(() => {
+    setAmount(1)
+  }, [selectedExchangeRate])
   const handleChange = e => setAmount(e.target.value)
   return (
     <>
