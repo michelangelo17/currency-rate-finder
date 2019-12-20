@@ -5,7 +5,11 @@ import FirstCurrency from './components/main/dropdowns/FirstCurrency'
 import SecondCurrency from './components/main/dropdowns/SecondCurrency'
 import ExchangeInfo from './components/main/ExchangeInfo'
 import { getLocation } from '../redux/slices/locationSlice'
-import { setByCountry, setAllRates, setTimeStamp } from '../redux/slices/currencySlice'
+import {
+  setByCountry,
+  setAllRates,
+  setTimeStamp,
+} from '../redux/slices/currencySlice'
 
 const App = () => {
   const { userLocation } = useSelector(state => state.location)
@@ -49,8 +53,12 @@ const App = () => {
           <p>{byCountry ? 'Find by Currency' : 'Find by Country'}</p>
         </div>
       </div>
-      <h1 className='siteTitle'>Simple Currency Exchanger</h1>
-      {useOffline && <p className='offlineMessage'>(Using offline data, last updated: {timeStamp})</p>}
+      <h1 className='siteTitle'>Simple Currency Exchange</h1>
+      {useOffline && (
+        <p className='offlineMessage'>
+          (Using offline data, last updated: {timeStamp})
+        </p>
+      )}
       <main>
         <section className='dropdowns'>
           <FirstCurrency />
