@@ -1,5 +1,4 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
-import logger from 'redux-logger'
+import { configureStore } from '@reduxjs/toolkit'
 import currencyReducer from '../slices/currencySlice'
 import locationReducer from '../slices/locationSlice'
 
@@ -7,9 +6,7 @@ const store = configureStore({
   reducer: {
     currency: currencyReducer,
     location: locationReducer,
-  },
-  middleware: [...getDefaultMiddleware(), logger],
-  
+  },  
 })
 
 export default store

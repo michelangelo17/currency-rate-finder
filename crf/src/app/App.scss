@@ -1,11 +1,11 @@
 body {
-  background: darkslategrey;
+  background: #2d2d2d;
   font-family: sans-serif;
 }
 
 h1 {
   text-align: center;
-  color: lightblue;
+  color: rgb(174, 192, 252);
 }
 
 h2 {
@@ -35,7 +35,7 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: darkslategray;
+  color: #403f43;
   border-radius: 1px;
   font-weight: bold;
 }
@@ -52,6 +52,17 @@ h3 {
   }
   .SecondCurrencySelector {
     min-width: 200px;
+  }
+}
+
+.exchangeInput {
+  display: flex;
+  flex-direction: column;
+  label {
+    color: lightgrey;
+  }
+  input {
+    margin: 10px auto;
   }
 }
 
