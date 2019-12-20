@@ -1,0 +1,71 @@
+body {
+  background: #2d2d2d;
+  font-family: sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: rgb(174, 192, 252);
+}
+
+h2 {
+  color: white;
+}
+
+h3 {
+  color: white;
+}
+
+.siteTitle {
+  margin-top: 70px;
+}
+
+.offlineMessage {
+  text-align: center;
+}
+
+.set-by-country {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: white;
+  height: 40px;
+  width: 150px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #403f43;
+  border-radius: 1px;
+  font-weight: bold;
+}
+
+.dropdowns {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 50px auto;
+  .FirstCurrencySelector {
+    min-width: 200px;
+    margin-bottom: 20px;
+  }
+  .SecondCurrencySelector {
+    min-width: 200px;
+  }
+}
+
+.exchangeInput {
+  display: flex;
+  flex-direction: column;
+  label {
+    color: lightgrey;
+  }
+  input {
+    margin: 10px auto;
+  }
+}
+
+.result {
+  text-align: center;
+}
