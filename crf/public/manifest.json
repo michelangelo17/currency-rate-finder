@@ -3,9 +3,19 @@
   "name": "Simple Currency Exchanger",
   "icons": [
     {
-      "src": "money.png",
+      "src": "money_128.png",
       "type": "image/png",
       "sizes": "128x128"
+    },
+    {
+      "src": "money_256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "money_512.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
   "start_url": ".",
