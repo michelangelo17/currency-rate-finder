@@ -423,3 +423,5 @@ export const getRates = currencyCode => async dispatch => {
     timer.clear()
   }
 }
+
+window.addEventListener('online', () => console.log('online'))
